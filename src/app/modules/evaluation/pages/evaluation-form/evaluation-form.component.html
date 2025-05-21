@@ -1,0 +1,29 @@
+<div class="container">
+  <h2>Avaliação da Consulta</h2>
+
+  <mat-form-field class="full-width">
+    <mat-label>Digite sua senha</mat-label>
+    <input matInput [(ngModel)]="senha" required />
+  </mat-form-field>
+
+  <div class="emoticons">
+    <button
+      *ngFor="let e of emoticons"
+      (click)="avaliacao = e.nota"
+      [class.selected]="avaliacao === e.nota"
+      class="emoticon-button"
+    >
+      <span>{{ e.emoji }}</span>
+      <div>{{ e.label }}</div>
+    </button>
+  </div>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="enviarAvaliacao()"
+    [disabled]="!senha || avaliacao === 0"
+  >
+    Enviar Avaliação
+  </button>
+</div>

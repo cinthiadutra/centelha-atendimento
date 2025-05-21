@@ -1,0 +1,31 @@
+<div class="container">
+  <h2>Iniciar Consulta</h2>
+
+  <form (ngSubmit)="iniciarConsulta()" #form="ngForm">
+    <mat-form-field class="full-width">
+      <mat-label>Número da Senha</mat-label>
+      <input matInput [(ngModel)]="senha" name="senha" required />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Selecione o Médium</mat-label>
+      <mat-select [(ngModel)]="mediumSelecionado" name="medium" required>
+        <mat-option *ngFor="let m of mediunsDisponiveis" [value]="m">
+          {{ m.nome }} — Guia: {{ m.guias[0] }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+      Iniciar Consulta
+    </button>
+  </form>
+
+  <div *ngIf="tempoRestante > 0" [ngClass]="statusCor" class="tempo-box">
+    <h3>Consulta em andamento</h3>
+    <p><strong>Senha:</strong> {{ senha }}</p>
+    <p><strong>Médium:</strong> {{ mediumSelecionado.nome }}</p>
+    <p><strong>Guia:</strong> {{ mediumSelecionado.guias[0] }}</p>
+    <p><strong>Tempo restante:</strong> {{ formatarTempo(tempoRestante) }}</p>
+  </div>
+</div>

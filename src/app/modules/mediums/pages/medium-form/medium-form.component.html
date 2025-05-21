@@ -1,0 +1,40 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title>Cadastro de Médium</mat-card-title>
+    <mat-card-content>
+      <form (ngSubmit)="adicionar()">
+        <mat-form-field class="full-width">
+          <mat-label>Nome</mat-label>
+          <input matInput [(ngModel)]="nome" name="nome" required />
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Fita</mat-label>
+          <mat-select [(ngModel)]="fita" name="fita">
+            <mat-option value="verde">Verde</mat-option>
+            <mat-option value="amarela">Amarela</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Nome do Guia</mat-label>
+          <input matInput [(ngModel)]="guia" name="guia" required />
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Falange Atendida</mat-label>
+          <input matInput [(ngModel)]="falange" name="falange" required />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Adicionar</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <h3>Médiuns Cadastrados</h3>
+  <mat-list>
+    <mat-list-item *ngFor="let m of lista">
+      {{ m.nome }} — Fita: {{ m.fita }} — Guia: {{ m.guias[0] }} — Falange: {{ m.falange }}
+    </mat-list-item>
+  </mat-list>
+</div>

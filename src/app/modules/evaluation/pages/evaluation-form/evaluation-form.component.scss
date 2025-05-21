@@ -1,0 +1,23 @@
+.emoticons {
+  display: flex;
+  justify-content: space-around;
+  margin: 1.5rem 0;
+
+  .emoticon-button {
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    text-align: center;
+    cursor: pointer;
+
+    &.selected {
+      transform: scale(1.2);
+      color: #3f51b5;
+    }
+
+    div {
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+    }
+  }
+}
