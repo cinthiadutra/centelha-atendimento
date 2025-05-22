@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, effect } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -8,6 +8,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 
 import { Medium } from '../../../presence/models/medium.model';
+
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Timestamp } from 'firebase/firestore';
 import { MediumService } from '../../../presence/service/medium.service';
 import { ConfigService } from '../../../config/service/config.service';
 
@@ -21,40 +24,48 @@ import { ConfigService } from '../../../config/service/config.service';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './consultation-start.component.html',
-  styleUrls: ['./consultation-start.component.scss']
+  styleUrls: ['./consultation-start.component.scss'],
 })
 export class ConsultationStartComponent implements OnInit {
-  senha: string = '';
+  senha = '';
   mediumSelecionado!: Medium;
   mediunsDisponiveis: Medium[] = [];
 
-  tempoRestante: number = 0; // em segundos
+  tempoRestante = 0;
+  statusCor = 'normal';
   intervalo: any;
-  statusCor: string = 'normal'; // 'normal', 'amarelo', 'vermelho'
 
   constructor(
     private mediumService: MediumService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private firestore: Firestore
   ) {}
 
   ngOnInit(): void {
-    const config = this.configService.getConfig();
-    if (!config) return;
-
-    this.mediunsDisponiveis = this.mediumService
-      .getPresentes()
-      .filter(m => m.guias.length > 0);
+    this.mediumService.getMediums().subscribe(mediuns => {
+      this.mediunsDisponiveis = mediuns.filter(m => m.presente && m.guias.length > 0);
+    });
   }
 
-  iniciarConsulta() {
+  async iniciarConsulta() {
     const config = this.configService.getConfig();
-    if (!this.mediumSelecionado || !this.senha || !config) return;
+    if (!config || !this.mediumSelecionado || !this.senha) return;
 
     this.tempoRestante = config.duracao * 60;
     this.statusCor = 'normal';
+
+    // salvar no Firestore
+    await addDoc(collection(this.firestore, 'consultas'), {
+      senha: this.senha,
+      mediumId: this.mediumSelecionado.id,
+      mediumNome: this.mediumSelecionado.nome,
+      guia: this.mediumSelecionado.guias[0],
+      inicio: Timestamp.fromDate(new Date()),
+      duracaoMin: config.duracao,
+    });
 
     this.intervalo = setInterval(() => {
       this.tempoRestante--;

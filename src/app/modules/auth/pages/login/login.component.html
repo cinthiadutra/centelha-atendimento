@@ -1,1 +1,26 @@
-<p>login works!</p>
+  <div class="form-container">
+    <div class="row">
+    <div class="col-md-8 offset-md-2">
+    <img src="src/assets/images/centelha_new.png" alt="logo" class="logo" />
+
+      <h3>Bem-vindo de volta!</h3>
+      <p>Por favor, faça login para continuar.</p>
+    </div>
+    <div class="col-md-8 offset-md-2">
+      
+  <div class="col-md-8">
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="email" type="email" />
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Senha</mat-label>
+      <input matInput [(ngModel)]="password" type="password" />
+    </mat-form-field>
+    <div class="col-button">
+    <button mat-raised-button color="primary" (click)="login()">Entrar</button>
+    <button mat-raised-button (click)="registrar()">Registrar</button>
+    <p *ngIf="error" style="color: red;">{{ error }}</p>
+  `</div>
+  </div>
+  </div>

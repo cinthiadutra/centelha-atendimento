@@ -33,7 +33,7 @@
 
   <h3>Médiuns Cadastrados</h3>
   <mat-list>
-    <mat-list-item *ngFor="let m of lista">
+    <mat-list-item *ngFor="let m of lista$ | async">
       {{ m.nome }} — Fita: {{ m.fita }} — Guia: {{ m.guias[0] }} — Falange: {{ m.falange }}
     </mat-list-item>
   </mat-list>

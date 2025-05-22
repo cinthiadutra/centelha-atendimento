@@ -1,0 +1,32 @@
+<div class="form-container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <img src="src/assets/images/centelha_new.png" alt="logo" class="logo" />
+
+      <h3>Seja Bem-vindo!</h3>
+      <p>Por favor, faça seu cadastro para continuar.</p>
+    </div>
+    <div class="col-md-8 offset-md-2">
+
+      <div class="col-md-8">
+        <mat-form-field class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="email" type="email" />
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Senha</mat-label>
+          <input matInput [(ngModel)]="password" type="password" />
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <label>Tipo de Usuário:</label>
+        <mat-radio-group [(ngModel)]="role" name="role">
+
+          <mat-radio-button value="admin">Administrador</mat-radio-button>
+          <mat-radio-button value="medium">Médium</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <p *ngIf="error" style="color: red;">{{ error }}</p>
+      <div class="button"></div>
+      <button mat-raised-button (click)="registrar()">Registrar</button>
+      <button mat-raised-button (click)="voltar()">Voltar</button>

@@ -7,13 +7,13 @@
   width: 40%;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #f7f7f5;
 }
 
 
 
 
-  .col-button button{
+  button{
     width: 100%;
     height: 40px;
     background-color: blue;
@@ -38,4 +38,22 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  mat-radio-group{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    color: #000;
+    margin: 10px;
+    mat-radio-button{
+      margin: 2px;
+      color: #000;
+      font-style: Bold;
+      .value{
+        color: primary;
+        ;
+      }
+        
+    }
   }

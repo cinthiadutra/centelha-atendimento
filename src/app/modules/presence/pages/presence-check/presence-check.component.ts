@@ -3,31 +3,54 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import { MediumService } from '../../service/medium.service';
-import { Medium } from '../../models/medium.model';
+import { Observable } from 'rxjs';
 
+import { Medium } from '../../../presence/models/medium.model';
+import { MediumService } from '../../service/medium.service';
 
 @Component({
   selector: 'app-presence-check',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatListModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatListModule,
+    MatButtonModule
+  ],
   templateUrl: './presence-check.component.html',
   styleUrls: ['./presence-check.component.scss']
 })
 export class PresenceCheckComponent implements OnInit {
-  mediuns: Medium[] = [];
+  mediuns$!: Observable<Medium[]>;
+  mediunsSelecionados: Set<string> = new Set();
 
-  constructor(private mediumService: MediumService, private router: Router) { }
+  constructor(
+    private mediumService: MediumService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.mediuns = this.mediumService.getMediuns();
+    this.mediuns$ = this.mediumService.getMediums();
   }
 
   togglePresenca(medium: Medium) {
-    medium.presente = !medium.presente;
+    if (this.mediunsSelecionados.has(medium.id)) {
+      this.mediunsSelecionados.delete(medium.id);
+    } else {
+      this.mediunsSelecionados.add(medium.id);
+    }
   }
 
-  confirmarPresencas() {
+  confirmarPresencas(mediuns: Medium[]) {
+    mediuns.forEach(m => {
+      const presente = this.mediunsSelecionados.has(m.id);
+      this.mediumService.updatePresenca(m.id, presente);
+    });
+
     this.router.navigate(['/consultation']);
+  }
+
+  isSelecionado(id: string): boolean {
+    return this.mediunsSelecionados.has(id);
   }
 }

@@ -1,1 +1,18 @@
-<p>presence-check works!</p>
+<div class="container">
+  <h2>Presença dos Médiuns</h2>
+
+  <ng-container *ngIf="mediuns$ | async as mediuns">
+    <mat-selection-list>
+      <mat-list-option
+        *ngFor="let m of mediuns"
+        [selected]="isSelecionado(m.id)"
+        (click)="togglePresenca(m)">
+        {{ m.nome }} ({{ m.fita.toUpperCase() }})
+      </mat-list-option>
+    </mat-selection-list>
+
+    <button mat-raised-button color="primary" (click)="confirmarPresencas(mediuns)">
+      Confirmar e Avançar
+    </button>
+  </ng-container>
+</div>
