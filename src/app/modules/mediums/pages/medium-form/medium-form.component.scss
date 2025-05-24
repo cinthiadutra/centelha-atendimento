@@ -1,12 +1,26 @@
 .container {
-  padding: 1rem;
+  padding: 30px;
+  border: 2px solid #ccc;
+  margin-top: 20px;
+  border-radius: 20px;
+  height: 90vh;
+  display: flex;
 
-  mat-card {
-    margin-bottom: 1rem;
+
+  .col-md-4{
+    margin: 20px 0;
+    width: 50%;
   }
 
-  .full-width {
-    width: 100%;
-    margin-bottom: 1rem;
+  .bt-add{
+    margin-top: 20px;
+    background-color: blue;
+    color: white;
   }
+
 }
+  mat-label {
+    font-size: 14px;
+    margin: 20px 5 5px;
+    
+  }

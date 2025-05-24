@@ -46,7 +46,7 @@ export class ConsultationStartComponent implements OnInit {
 
   ngOnInit(): void {
     this.mediumService.getMediums().subscribe(mediuns => {
-      this.mediunsDisponiveis = mediuns.filter(m => m.presente && m.guias.length > 0);
+      this.mediunsDisponiveis = mediuns.filter(m => m.fita && m.isPresent === true);
     });
   }
 
@@ -61,8 +61,8 @@ export class ConsultationStartComponent implements OnInit {
     await addDoc(collection(this.firestore, 'consultas'), {
       senha: this.senha,
       mediumId: this.mediumSelecionado.id,
-      mediumNome: this.mediumSelecionado.nome,
-      guia: this.mediumSelecionado.guias[0],
+      mediumNome: this.mediumSelecionado.name,
+      guia: this.mediumSelecionado.falange['Baiano ou Baiana'],
       inicio: Timestamp.fromDate(new Date()),
       duracaoMin: config.duracao,
     });

@@ -11,7 +11,7 @@
       <mat-label>Selecione o Médium</mat-label>
       <mat-select [(ngModel)]="mediumSelecionado" name="medium" required>
         <mat-option *ngFor="let m of mediunsDisponiveis" [value]="m">
-          {{ m.nome }} — Guia: {{ m.guias[0] }}
+          {{ m.name }} — Guia: {{ m.falange }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -24,8 +24,8 @@
   <div *ngIf="tempoRestante > 0" [ngClass]="statusCor" class="tempo-box">
     <h3>Consulta em andamento</h3>
     <p><strong>Senha:</strong> {{ senha }}</p>
-    <p><strong>Médium:</strong> {{ mediumSelecionado.nome }}</p>
-    <p><strong>Guia:</strong> {{ mediumSelecionado.guias[0] }}</p>
+    <p><strong>Médium:</strong> {{ mediumSelecionado.name }}</p>
+    <p><strong>Guia:</strong> {{ mediumSelecionado.falange }}</p>
     <p><strong>Tempo restante:</strong> {{ formatarTempo(tempoRestante) }}</p>
   </div>
 </div>

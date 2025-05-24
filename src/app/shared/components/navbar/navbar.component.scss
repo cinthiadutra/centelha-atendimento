@@ -1,16 +1,18 @@
 .container {
-  display: flex;
+  display: block;
   flex-direction: column;
-  height: 100vh;
+  background-color: rgb(201, 246, 201);
+  align-self: self-start;
+  width: 100%;
 }
 
 .navbar {
-  width: 250px;
-  background-color: #f0f0f0;
-  padding: 1rem;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: start;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 .logo img {
@@ -21,7 +23,6 @@
 .menu ul {
   list-style: none;
   padding: 0;
-  width: 100%;
 
   li {
     margin-bottom: 0.5rem;
@@ -34,7 +35,7 @@
       border-radius: 4px;
 
       &:hover {
-        background-color: #e0e0e0;
+        background-color: #dcce0b;
       }
     }
   }

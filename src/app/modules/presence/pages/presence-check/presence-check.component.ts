@@ -1,56 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
-import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
-import { Observable } from 'rxjs';
-
-import { Medium } from '../../../presence/models/medium.model';
-import { MediumService } from '../../service/medium.service';
+import { Fita, MediumService } from '../../models/medium.model';
+import { ToastService } from '../../../../core/services/toast';
 
 @Component({
   selector: 'app-presence-check',
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule,
-    MatListModule,
-    MatButtonModule
+    MatCardModule,
+    MatSlideToggleModule,
+    MatBadgeModule,
+    MatButtonModule,
   ],
   templateUrl: './presence-check.component.html',
-  styleUrls: ['./presence-check.component.scss']
+  styleUrls: ['./presence-check.component.scss'],
 })
 export class PresenceCheckComponent implements OnInit {
-  mediuns$!: Observable<Medium[]>;
-  mediunsSelecionados: Set<string> = new Set();
+  private mediumService = inject(MediumService);
+  private toast = inject(ToastService);
 
-  constructor(
-    private mediumService: MediumService,
-    private router: Router
-  ) {}
+  mediums = this.mediumService.mediums; // Signal<Medium[]>
+
+  greenRibbonMediums = computed(() => this.mediums().filter(m => m.fita === Fita.Verde));
+  yellowRibbonMediums = computed(() => this.mediums().filter(m => m.fita === Fita.Amarela));
 
   ngOnInit(): void {
-    this.mediuns$ = this.mediumService.getMediums();
+    this.mediumService.loadMediums();
   }
 
-  togglePresenca(medium: Medium) {
-    if (this.mediunsSelecionados.has(medium.id)) {
-      this.mediunsSelecionados.delete(medium.id);
-    } else {
-      this.mediunsSelecionados.add(medium.id);
+  togglePresence(id: string): void {
+    this.mediumService.togglePresence(id);
+    const medium = this.mediums().find(m => m.id === id);
+    if (medium) {
+      this.toast.show(
+        medium.isPresent ? 'Médium marcado como Ausente' : 'Médium marcado como Presente',
+        `${medium.name} foi marcado como ${medium.isPresent ? 'ausente' : 'presente'}.`
+      );
     }
-  }
-
-  confirmarPresencas(mediuns: Medium[]) {
-    mediuns.forEach(m => {
-      const presente = this.mediunsSelecionados.has(m.id);
-      this.mediumService.updatePresenca(m.id, presente);
-    });
-
-    this.router.navigate(['/consultation']);
-  }
-
-  isSelecionado(id: string): boolean {
-    return this.mediunsSelecionados.has(id);
   }
 }

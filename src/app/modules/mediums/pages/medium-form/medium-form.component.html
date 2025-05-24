@@ -1,40 +1,36 @@
-<div class="container">
-  <mat-card>
-    <mat-card-title>Cadastro de Médium</mat-card-title>
-    <mat-card-content>
-      <form (ngSubmit)="adicionar()">
+<mat-card class="container">
+  <h2>Cadastro de Médium</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field class="full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput [(ngModel)]="nome" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Núcleo</mat-label>
+        <mat-select [(ngModel)]="nucleo" name="nucleos">
+         <mat-option *ngFor="let n of nucleos" [value]="n">{{ getNucleoLabel(n) }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Fita</mat-label>
+        <mat-select [(ngModel)]="fita" name="fita">
+         <mat-option *ngFor="let f of fitas" [value]="f">{{ getFitaLabel(f) }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <div *ngFor="let fal of falanges">
         <mat-form-field class="full-width">
-          <mat-label>Nome</mat-label>
-          <input matInput [(ngModel)]="nome" name="nome" required />
+          <mat-label>{{ fal }}</mat-label>
+          <input matInput [(ngModel)]="falangeGuiaMap[fal]" placeholder="Nome do guia" />
         </mat-form-field>
+      </div>
+    </div>
+  </div>
 
-        <mat-form-field class="full-width">
-          <mat-label>Fita</mat-label>
-          <mat-select [(ngModel)]="fita" name="fita">
-            <mat-option value="verde">Verde</mat-option>
-            <mat-option value="amarela">Amarela</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>Nome do Guia</mat-label>
-          <input matInput [(ngModel)]="guia" name="guia" required />
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>Falange Atendida</mat-label>
-          <input matInput [(ngModel)]="falange" name="falange" required />
-        </mat-form-field>
-
-        <button mat-raised-button color="primary" type="submit">Adicionar</button>
-      </form>
-    </mat-card-content>
-  </mat-card>
-
-  <h3>Médiuns Cadastrados</h3>
-  <mat-list>
-    <mat-list-item *ngFor="let m of lista$ | async">
-      {{ m.nome }} — Fita: {{ m.fita }} — Guia: {{ m.guias[0] }} — Falange: {{ m.falange }}
-    </mat-list-item>
-  </mat-list>
-</div>
+  <button class="bt-add" mat-raised-button color="primary" (click)="adicionar()" [disabled]="!isFormValid()">Salvar</button>
+</mat-card>

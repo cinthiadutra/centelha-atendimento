@@ -1,0 +1,45 @@
+.container{
+    padding: 0 20px;
+    align-items: flex-start;
+    height: 400px;
+    width: 100%;
+    background-color: var(--background);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    padding: 20px;
+
+button{
+    margin: 0 10px;
+    background-color: green;
+    color: white;
+    align-content: center;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    .row{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+
+h1{
+    margin: 0 10px;
+    color: green;
+    font-size: 24px;
+}
+.time{
+    margin: 0 10px;
+}
+.quantidade{
+    margin: 0 10px;
+    flex-direction: column;
+}}

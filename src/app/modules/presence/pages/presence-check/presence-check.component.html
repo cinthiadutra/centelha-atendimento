@@ -1,18 +1,60 @@
-<div class="container">
-  <h2>Presença dos Médiuns</h2>
+<div class="space-y-6">
+  <div class="space-y-2">
+    <h1 class="text-3xl font-bold tracking-tight">Presença dos Médiuns</h1>
+    <p class="text-muted-foreground">
+      Marque quais médiuns estão presentes para as consultas de hoje
+    </p>
+  </div>
 
-  <ng-container *ngIf="mediuns$ | async as mediuns">
-    <mat-selection-list>
-      <mat-list-option
-        *ngFor="let m of mediuns"
-        [selected]="isSelecionado(m.id)"
-        (click)="togglePresenca(m)">
-        {{ m.nome }} ({{ m.fita.toUpperCase() }})
-      </mat-list-option>
-    </mat-selection-list>
+  <!-- Fita Verde -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><span class="umbanda-badge-green">Fita Verde</span> Médiuns de Fita Verde</mat-card-title>
+      <mat-card-subtitle>Médiuns em desenvolvimento com fitas verdes</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content *ngIf="greenRibbonMediums().length > 0; else noGreen">
+      <div class="grid gap-4 md:grid-cols-2">
+        <div *ngFor="let medium of greenRibbonMediums()" class="medium-tile" [ngClass]="{ 'present': medium.isPresent }">
+          <div>
+            <p class="font-medium">{{ medium.name }}</p>
+            <p class="text-sm text-muted-foreground">{{ medium.fita }} • {{ medium.falange}} guias</p>
+          </div>
+          <mat-slide-toggle
+            [checked]="medium.isPresent"
+            (change)="togglePresence(medium.id)"
+            color="primary">
+          </mat-slide-toggle>
+        </div>
+      </div>
+    </mat-card-content>
+    <ng-template #noGreen>
+      <p class="text-center text-muted-foreground py-4">Nenhum médium de fita verde registrado</p>
+    </ng-template>
+  </mat-card>
 
-    <button mat-raised-button color="primary" (click)="confirmarPresencas(mediuns)">
-      Confirmar e Avançar
-    </button>
-  </ng-container>
+  <!-- Fita Amarela -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><span class="umbanda-badge-yellow">Fita Amarela</span> Médiuns de Fita Amarela</mat-card-title>
+      <mat-card-subtitle>Médiuns em desenvolvimento com fitas amarelas</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content *ngIf="yellowRibbonMediums().length > 0; else noYellow">
+      <div class="grid gap-4 md:grid-cols-2">
+        <div *ngFor="let medium of yellowRibbonMediums()" class="medium-tile" [ngClass]="{ 'present': medium.isPresent }">
+          <div>
+            <p class="font-medium">{{ medium.name }}</p>
+            <p class="text-sm text-muted-foreground">{{ medium.fita }} • {{ medium.falange }} guias</p>
+          </div>
+          <mat-slide-toggle
+            [checked]="medium.isPresent"
+            (change)="togglePresence(medium.id)"
+            color="accent">
+          </mat-slide-toggle>
+        </div>
+      </div>
+    </mat-card-content>
+    <ng-template #noYellow>
+      <p class="text-center text-muted-foreground py-4">Nenhum médium de fita amarela registrado</p>
+    </ng-template>
+  </mat-card>
 </div>

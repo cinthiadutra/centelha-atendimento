@@ -7,10 +7,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-
-import { Medium } from '../../../presence/models/medium.model';
 import { Observable } from 'rxjs';
+
 import { MediumService } from '../../../presence/service/medium.service';
+import { Fita, Medium, Nucleo } from '../../../presence/models/medium.model';
+import { Falange } from '../../../config/models/config.model';
 
 @Component({
   selector: 'app-medium-form',
@@ -30,11 +31,23 @@ import { MediumService } from '../../../presence/service/medium.service';
 })
 export class MediumFormComponent implements OnInit {
   nome = '';
-  fita: 'verde' | 'amarela' = 'verde';
-  guia = '';
-  falange = '';
+  fita: Fita = Fita.Verde;
+  nucleo: Nucleo = Nucleo.ccu;
+  falangeGuiaMap: Record<Falange, string> = {
+    [Falange.Caboclo]: '',
+    [Falange.PretoVelho]: '',
+    [Falange.Exu]: '',
+    [Falange.Baiano]: '',
+    [Falange.Malandro]: '',
+    [Falange.cigano]: '',
+    [Falange.marinheiro]: '',
+  };
 
-  lista$!: Observable<Medium[]>; // lista reativa do Firestore
+  lista$!: Observable<Medium[]>;
+
+  falanges = Object.values(Falange);
+  fitas = Object.values(Fita);
+  nucleos = Object.values(Nucleo);
 
   constructor(private mediumService: MediumService) {}
 
@@ -42,24 +55,37 @@ export class MediumFormComponent implements OnInit {
     this.lista$ = this.mediumService.getMediums();
   }
 
+  isFormValid(): boolean {
+    const allFalangesFilled = Object.values(this.falangeGuiaMap).every(val => val.trim() !== '');
+    const allFalangesPresent = Object.keys(this.falangeGuiaMap).length === Object.values(Falange).length;
+    return this.nome.trim() !== '' && this.nucleo !== undefined && allFalangesFilled && allFalangesPresent;
+  }
+
+  getFitaLabel(f: Fita): string {
+    return Fita[f as keyof typeof Fita];
+  }
+
+  getNucleoLabel(n: Nucleo): string {
+    return Nucleo[n as unknown as keyof typeof Nucleo];
+  }
+
   async adicionar() {
-    if (!this.nome || !this.guia || !this.falange) return;
+    if (!this.isFormValid()) return;
 
     const medium: Medium = {
-      id: '', // será gerado pelo Firestore
-      nome: this.nome,
+      id: '',
+      name: this.nome,
       fita: this.fita,
-      guias: [this.guia],
-      falange: this.falange,
-      presente: false,
+      falange: this.falangeGuiaMap,
+      isPresent: false,
+      nucleo: this.nucleo,
     };
 
     await this.mediumService.saveMedium(medium);
 
-    // limpar campos
     this.nome = '';
-    this.fita = 'verde';
-    this.guia = '';
-    this.falange = '';
+    this.fita = Fita.Verde;
+    this.nucleo = Nucleo.ccu;
+    Object.keys(this.falangeGuiaMap).forEach(key => this.falangeGuiaMap[key as Falange] = '');
   }
 }

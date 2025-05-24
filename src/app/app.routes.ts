@@ -12,8 +12,8 @@ import { RegisterComponent } from './modules/auth/pages/register/register.compon
 import { adminGuard } from './core/services/admin.guard';
 
 export const routes: Routes = [
-    { path: '', component: LoginComponent },
-    { path: 'config', component: ConfigFormComponent },
+    { path: 'login', component: LoginComponent },
+    { path: '', component: ConfigFormComponent },
     { path: 'presence', component: PresenceCheckComponent },
     { path: 'evaluation', component: EvaluationFormComponent },
     { path: 'consultation', component: ConsultationStartComponent },
